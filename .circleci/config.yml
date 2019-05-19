@@ -1,10 +1,21 @@
 version: 2
-jobs:
-  build:
-    docker:
-      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
-    steps:
-      - checkout
-      - run: dotnet restore
-      - run: dotnet build
-      - run: dotnet run
+#jobs:
+#  build:
+#    docker:
+#      - image: mcr.microsoft.com/dotnet/core/sdk:2.2
+#    steps:
+#      - checkout
+#      - run: dotnet restore
+#      - run: dotnet build
+#      - run: dotnet run
+
+orbs:
+  aws-ecr: circleci/aws-ecr@0.0.2
+  aws-ecs: circleci/aws-ecs@0.0.8
+workflows:
+  build-and-deploy:
+    jobs:
+      - aws-ecr/build_and_push_image:
+          account-url: "$3221-9611-9477.dkr.ecr.$ap-southeast-2.amazonaws.com"
+          repo: "$ec2"
+          region: $ap-southeast-2
