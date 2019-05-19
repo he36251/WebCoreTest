@@ -19,3 +19,4 @@ workflows:
           account-url: "$3221-9611-9477.dkr.ecr.$ap-southeast-2.amazonaws.com"
           repo: "$ec2"
           region: $ap-southeast-2
+          tag: ""
