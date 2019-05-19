@@ -12,11 +12,18 @@ version: 2.1
 orbs:
   aws-ecr: circleci/aws-ecr@0.0.2
   aws-ecs: circleci/aws-ecs@0.0.8
-workflows:
-  build-and-deploy:
-    jobs:
-      - aws-ecr/build_and_push_image:
-          account-url: "$3221-9611-9477.dkr.ecr.$ap-southeast-2.amazonaws.com"
-          repo: "$ec2"
-          region: "$ap-southeast-2"
-          tag: ""
+  workflows:
+    build-and-deploy:
+      jobs:
+        - aws-ecr/build_and_push_image:
+            account-url: "$3221-9611-9477.dkr.ecr.$ap-southeast-2.amazonaws.com"
+            repo: "$ec2"
+            region: $ap-southeast-2
+            tag: ""
+        - aws-ecs/deploy-service-update:
+            requires:
+              - aws-ecr/build_and_push_image
+            aws-region: $ap-southeast-2
+            family: "$ec2-service"
+            cluster-name: "$ec2-cluster"
+            container-image-name-updates: "container=$ec2-service"
